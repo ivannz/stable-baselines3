@@ -59,14 +59,14 @@ class HerReplayBuffer(ReplayBuffer):
 
         # input dimensions for buffer initialization
         input_shape = {
-            "observation": (self.env.num_envs, self.env.obs_dim),
-            "achieved_goal": (self.env.num_envs, self.env.goal_dim),
-            "desired_goal": (self.env.num_envs, self.env.goal_dim),
+            "observation": (self.env.num_envs, *self.env.obs_dim),
+            "achieved_goal": (self.env.num_envs, *self.env.goal_dim),
+            "desired_goal": (self.env.num_envs, *self.env.goal_dim),
             "action": (self.action_dim,),
             "reward": (1,),
-            "next_obs": (self.env.num_envs, self.env.obs_dim),
-            "next_achieved_goal": (self.env.num_envs, self.env.goal_dim),
-            "next_desired_goal": (self.env.num_envs, self.env.goal_dim),
+            "next_obs": (self.env.num_envs, *self.env.obs_dim),
+            "next_achieved_goal": (self.env.num_envs, *self.env.goal_dim),
+            "next_desired_goal": (self.env.num_envs, *self.env.goal_dim),
             "done": (1,),
         }
         self.buffer = {
