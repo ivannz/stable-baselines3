@@ -252,15 +252,15 @@ def is_vectorized_observation(observation: np.ndarray, observation_space: gym.sp
                 + f"(n_env, {len(observation_space.nvec)}) for the observation shape."
             )
     elif isinstance(observation_space, gym.spaces.MultiBinary):
-        if observation.shape == (observation_space.n,):
+        if observation.shape == observation_space.shape:
             return False
-        elif len(observation.shape) == 2 and observation.shape[1] == observation_space.n:
+        elif observation.shape[1:] == observation_space.shape:
             return True
         else:
             raise ValueError(
                 f"Error: Unexpected observation shape {observation.shape} for MultiBinary "
-                + f"environment, please use ({observation_space.n},) or "
-                + f"(n_env, {observation_space.n}) for the observation shape."
+                + f"environment, please use {observation_space.shape} or "
+                + "(n_env, {}) for the observation shape.".format(", ".join(map(str, observation_space.shape)))
             )
     else:
         raise ValueError(

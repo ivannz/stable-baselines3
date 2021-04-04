@@ -128,15 +128,19 @@ def get_obs_shape(observation_space: spaces.Space) -> Tuple[int, ...]:
     """
     if isinstance(observation_space, spaces.Box):
         return observation_space.shape
+
     elif isinstance(observation_space, spaces.Discrete):
         # Observation is an int
         return (1,)
+
     elif isinstance(observation_space, spaces.MultiDiscrete):
         # Number of discrete features
         return (int(len(observation_space.nvec)),)
+
     elif isinstance(observation_space, spaces.MultiBinary):
         # Number of binary features
-        return (int(observation_space.n),)
+        return observation_space.shape
+
     else:
         raise NotImplementedError(f"{observation_space} observation space is not supported")
 
@@ -153,6 +157,12 @@ def get_flattened_obs_dim(observation_space: spaces.Space) -> int:
     # it may be a problem for Dict/Tuple spaces too...
     if isinstance(observation_space, spaces.MultiDiscrete):
         return sum(observation_space.nvec)
+
+    elif isinstance(observation_space, spaces.MultiBinary):
+        # unlike `MultiDiscrete` `MultiBinary` is a shaped binary space
+        #  > `An n-shape binary space. `
+        return int(np.prod(observation_space.shape))
+
     else:
         # Use Gym internal method
         return spaces.utils.flatdim(observation_space)
