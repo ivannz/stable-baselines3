@@ -134,6 +134,8 @@ class HER(BaseAlgorithm):
         # storage for transitions of current episode for offline sampling
         # for online sampling, it replaces the "classic" replay buffer completely
         her_buffer_size = self.buffer_size if online_sampling else self.max_episode_length
+        # `self.buffer_size` is being getattr-d from another attribute via a recursive call
+        #  see `HER.__getattr__`
 
         assert self.env is not None, "Because it needs access to `env.compute_reward()` HER you must provide the env."
 
